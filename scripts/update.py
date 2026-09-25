@@ -3,6 +3,7 @@
 import argparse
 import base64
 import json
+import os
 from pathlib import Path
 import re
 import urllib.request
@@ -47,10 +48,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--check', action='store_true', help='Report the latest nightly without changing files')
     args = parser.parse_args()
-    request = urllib.request.Request(RELEASES, headers={
+    headers = {
         'Accept': 'application/vnd.github+json',
         'User-Agent': 't3-nightly-nix-flake',
-    })
+    }
+    if token := os.environ.get('GITHUB_TOKEN'):
+        headers['Authorization'] = f'Bearer {token}'
+    request = urllib.request.Request(RELEASES, headers=headers)
     with urllib.request.urlopen(request, timeout=60) as response:
         releases = json.load(response)
     _, version, hash_sri = newest(releases)
