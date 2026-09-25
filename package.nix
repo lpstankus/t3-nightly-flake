@@ -14,12 +14,14 @@ appimageTools.wrapType2 {
     install -Dm444 ${contents}/usr/share/icons/hicolor/512x512/apps/t3code.png \
       "$out/share/icons/hicolor/512x512/apps/t3code-nightly.png"
     mkdir -p "$out/share/applications"
-    cat > "$out/share/applications/t3code-nightly.desktop" <<EOF
+    # Match Electron's desktop ID so GNOME can associate the window and launcher.
+    cat > "$out/share/applications/com.t3tools.T3Code.desktop" <<EOF
 [Desktop Entry]
 Name=T3 Code (Nightly)
 Comment=T3 Code desktop build
 Exec=$out/bin/t3code-desktop-nightly --no-sandbox %U
 Terminal=false
+NoDisplay=false
 Type=Application
 Icon=t3code-nightly
 StartupWMClass=t3code

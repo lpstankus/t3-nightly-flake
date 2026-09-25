@@ -29,6 +29,7 @@ jobs:
             exit 0
           fi
           nix build --print-build-logs .#t3code-desktop-nightly
+          nix flake check --print-build-logs
       - name: Publish verified pin
         run: |
           if git diff --quiet -- package.nix; then
