@@ -1,0 +1,40 @@
+name: Update T3 nightly
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-t3-nightly
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - name: Check upstream and update pin
+        run: python3 scripts/update.py
+      - name: Build the pinned desktop application
+        run: |
+          if git diff --quiet -- package.nix; then
+            echo 'Already current.'
+            exit 0
+          fi
+          nix build --print-build-logs .#t3code-desktop-nightly
+      - name: Publish verified pin
+        run: |
+          if git diff --quiet -- package.nix; then
+            echo 'Already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add package.nix
+          git commit -m "Update T3 desktop nightly"
+          git push
