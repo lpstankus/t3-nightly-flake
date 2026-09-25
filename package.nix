@@ -6,7 +6,7 @@ let
     url = "https://github.com/pingdotgg/t3code/releases/download/v${version}/T3-Code-${version}-x86_64.AppImage";
     sha256 = "sha256-DRsxBRN3mw0nUKw7H8pW7OsbQTk6AOHVMm/N1MIR8jY=";
   };
-  contents = appimageTools.extractType2 { inherit pname version src; };
+  contents = appimageTools.extract { inherit pname version src; };
 in
 appimageTools.wrapType2 {
   inherit pname version src;
