@@ -1,10 +1,10 @@
 { appimageTools, fetchurl, lib }:
 let
-  version = "0.1.3-nightly.20261023.3566";
+  version = "0.1.3-nightly.20261023.3579";
   pname = "t3code-desktop-nightly";
   src = fetchurl {
     url = "https://github.com/pingdotgg/t3code/releases/download/v${version}/T3-Code-${version}-x86_64.AppImage";
-    sha256 = "sha256-lpUxjpIAi1YA8AiM5yPyAGddKZiOo15kuqBUH/Uj+cI=";
+    sha256 = "sha256-2KPHkreZrHnuKx433GZaK1Df50o35raTN8IQKkGPUZQ=";
   };
   contents = appimageTools.extract { inherit pname version src; };
 in
